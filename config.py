@@ -34,7 +34,7 @@ def config():
 
 
     # Experiment Configs
-    batch_size = int(os.getenv("batch_size", 256))
+    batch_size = int(os.getenv("batch_size", 32))
     add_blank = int(os.getenv("add_blank", 1))  # True: 1 / False: 0
     snet_emb = int(os.getenv("snet_emb", 1))  # True: 1 / False: 0
     n_spks = int(os.getenv("n_spks", 2007))  # libritts:247, lrs3: 2007
