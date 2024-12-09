@@ -126,6 +126,7 @@ class LRS3Dataset(torch.utils.data.Dataset):
         cap.release()
         imgs = np.stack(imgs, axis=3)
         imgs = np.transpose(imgs, (2, 3, 0, 1))
+        imgs = torch.from_numpy(imgs).float()
 
         return imgs
 
