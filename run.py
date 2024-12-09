@@ -1,6 +1,6 @@
 
 import pytorch_lightning as pl
-from pytorch_lightning.plugins import DDPStrategy
+from pytorch_lightning.plugins import DDPPlugin
 
 import os
 import copy
@@ -50,7 +50,7 @@ def main(_config):
     trainer = pl.Trainer(
         gpus=_config["num_gpus"],
         num_nodes=_config["num_nodes"],
-        strategy=DDPStrategy(gradient_as_bucket_view=True, find_unused_parameters=True),
+        strategy=DDPPlugin(gradient_as_bucket_view=True, find_unused_parameters=True),
         max_steps=max_steps,
         callbacks=callbacks,
         accumulate_grad_batches=grad_steps,
