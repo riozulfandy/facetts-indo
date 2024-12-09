@@ -15,7 +15,6 @@ def main(_config):
     
     dm = _datamodules["dataset_" + config["dataset"]](config)
     
-    os.makedirs(config["local_checkpoint_dir"], exist_ok=True)
     
     checkpoint_callback_epoch = pl.callbacks.ModelCheckpoint(
         save_top_k=1,
