@@ -5,6 +5,7 @@ import random
 from model.utils import fix_len_compatibility
 from utils.tts_util import intersperse, parse_filelist
 from text import cmudict, text_to_sequence
+from text.symbols import symbols
 from utils.mel_spectrogram import mel_spectrogram
 import cv2
 import numpy as np
