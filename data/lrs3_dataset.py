@@ -4,7 +4,7 @@ import os
 import random
 from model.utils import fix_len_compatibility
 from utils.tts_util import intersperse, parse_filelist
-from text import cmudict
+from text import cmudict, text_to_sequence
 from utils.mel_spectrogram import mel_spectrogram
 import cv2
 import numpy as np
@@ -22,16 +22,16 @@ class LRS3Dataset(torch.utils.data.Dataset):
 
         if self.split == "train":
             self.filelist = self.config["lrs3_train"]
-            self.video_dir = os.path.join(self.config["lrs3_path"], "trainval")
-            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav/trainval")
+            self.video_dir = os.path.join(self.config["lrs3_path"], "mp4")
+            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav")
         elif self.split == "val":
             self.filelist = self.config["lrs3_val"]
-            self.video_dir = os.path.join(self.config["lrs3_path"], "trainval")
-            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav/trainval")
+            self.video_dir = os.path.join(self.config["lrs3_path"], "mp4")
+            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav")
         elif self.split == "test":
             self.filelist = self.config["lrs3_test"]
-            self.video_dir = os.path.join(self.config["lrs3_path"], "test")
-            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav/test")
+            self.video_dir = os.path.join(self.config["lrs3_path"], "mp4")
+            self.audio_dir = os.path.join(self.config["lrs3_path"], "wav")
 
         # Load datalist
         with open(self.filelist) as listfile:
@@ -39,7 +39,7 @@ class LRS3Dataset(torch.utils.data.Dataset):
 
         print(f"{split} set: ", len(self.data_list))
 
-        spk_list = [data.split("\n")[0].split("/")[0] for data in self.data_list]
+        spk_list = [data.strip().split("/")[0] for data in self.data_list]
         spk_list = set(spk_list)
         print(f"{len(spk_list)=}")
         
@@ -51,7 +51,7 @@ class LRS3Dataset(torch.utils.data.Dataset):
         return len(self.data_list)
 
     def __getitem__(self, index):
-        name = self.data_list[index].split("\n")[0]
+        name = self.data_list[index].strip()
         vidname = name + ".mp4"
         textpath = name + ".txt"
         aud, sr = torchaudio.load(os.path.join(self.audio_dir, name + ".wav"))
