@@ -105,11 +105,9 @@ class LRS3Dataset(torch.utils.data.Dataset):
 
 
     def load_random_frame(self, datadir, filename, len_frame=1):
-        # len_frame == -1: load all frames
-        # else: load random index frame with len_frames
         cap = cv2.VideoCapture(os.path.join(datadir, filename))
         nframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
+    
         if len_frame == -1:
             ridx = 0
             loadframe = nframes
@@ -117,17 +115,20 @@ class LRS3Dataset(torch.utils.data.Dataset):
             ridx = random.randint(2, nframes - len_frame)
             loadframe = len_frame
             cap.set(1, ridx)
-
+    
         imgs = []
         for i in range(0, loadframe):
             _, img = cap.read()
+            # Ensure 3 channels by converting grayscale to RGB if needed
+            if img.ndim == 2:
+                img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
             imgs.append(img)
-
+    
         cap.release()
         imgs = np.stack(imgs, axis=3)
         imgs = np.transpose(imgs, (2, 3, 0, 1))
-        imgs = torch.from_numpy(imgs).float()
-
+        imgs = torch.from_numpy(imgs).float() / 255.0  # Normalize to [0, 1]
+    
         return imgs
 
 
