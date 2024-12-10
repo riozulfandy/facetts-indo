@@ -119,9 +119,16 @@ class LRS3Dataset(torch.utils.data.Dataset):
         imgs = []
         for i in range(0, loadframe):
             _, img = cap.read()
-            # Ensure 3 channels by converting grayscale to RGB if needed
-            if img.ndim == 2:
+            # Ensure 3 channels
+            if img is None:
+                raise ValueError(f"Could not read frame from {filename}")
+            
+            # Convert to RGB if grayscale
+            if len(img.shape) == 2 or img.shape[2] == 1:
                 img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+            elif img.shape[2] > 3:
+                img = img[:, :, :3]  # Take first 3 channels
+            
             imgs.append(img)
     
         cap.release()
