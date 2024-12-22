@@ -96,7 +96,7 @@ def config():
     # Inference Configs
     test_txt = os.getenv("test_txt", "test/text.txt")
     use_custom = int(os.getenv("use_custom", 1))
-    test_faceimg = os.getenv("test_faceimg", "test/face2.png")
+    test_faceimg = os.getenv("test_faceimg", "test/face1.png")
     timesteps = int(os.getenv("timesteps", 10))
     output_dir = os.getenv("output_dir", "test")
 
