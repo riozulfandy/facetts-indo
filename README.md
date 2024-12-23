@@ -3,7 +3,7 @@
 Repository ini adalah implementasi training / inferensi Face-TTS Indo.
 
 ---
-## Installation
+## Instalasi
 
 1. Install python packages
 ```
@@ -16,7 +16,7 @@ cd model/monotonic_align; python setup.py build_ext --inplace; cd ../..
 ```
 
 ---
-## Preparation
+## Preparasi
 1. Download trained model weights <a href="https://www.kaggle.com/datasets/riozulfandy04/facetts">disini</a>
 
 2. Buat folder lrs3 pada data `'data/lrs3/'`
